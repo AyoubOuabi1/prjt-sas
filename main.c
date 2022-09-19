@@ -81,7 +81,7 @@ void getAllProduct(){
 }
 //print 
 void printData(){
-	getAllProduct();
+	//getAllProduct();
 	int i;
     for (i=0;i<lineCount;i++){
 		printf("le code : %s / le nom : %s / la quantite est : %d / le prix : %.2f \n ",prd[i].code,prd[i].nom,prd[i].quantite,prd[i].prix);
@@ -95,32 +95,77 @@ float calculeTtc(float prix){
 	
 }
 //comapre two char 
-char compare(char a[200][20]){
+char sortByAlpha(){
+	getAllProduct();
 	int i,j,d;
-	char c[lineCount][20],output[lineCount][20];
+	struct Produit c[lineCount];
 	for(i=0;i<lineCount;i++){
 		for(j=i+1;j<lineCount;j++){
-			if(a[i][0]>=a[j][0]){
-				strcpy(c[i],a[i]);
-				strcpy(a[i],a[j]);
-				strcpy(a[j],c[i]);
-			
+			if(prd[i].code[0]>=prd[j].code[0]){
+				//code
+				
+				strcpy(c[i].code,prd[i].code);
+				strcpy(prd[i].code,prd[j].code);
+				strcpy(prd[j].code,c[i].code);
+				//nom
+				strcpy(c[i].nom,prd[i].nom);
+				strcpy(prd[i].nom,prd[j].nom);
+				strcpy(prd[j].nom,c[i].nom);
+				//quantite 
+				c[i].quantite=prd[i].quantite;
+				prd[i].quantite=prd[j].quantite;
+				prd[j].quantite=c[i].quantite;
+				//prix 
+				c[i].prix=prd[i].prix;
+				prd[i].prix=prd[j].prix;
+				prd[j].prix=c[i].prix;
+				
 				
 			}
 		}
 	}
+	printData();
 
-	for (d=0;d<lineCount;d++){
-		strcpy(output[d],a[d]);
+}
+
+char sortByPrice(){
+	getAllProduct();
+	int i,j,d;
+	struct Produit c[lineCount];
+	for(i=0;i<lineCount;i++){
+		for(j=i+1;j<lineCount;j++){
+			if(prd[i].prix<=prd[j].prix){
+				//code
+				
+				strcpy(c[i].code,prd[i].code);
+				strcpy(prd[i].code,prd[j].code);
+				strcpy(prd[j].code,c[i].code);
+				//nom
+				strcpy(c[i].nom,prd[i].nom);
+				strcpy(prd[i].nom,prd[j].nom);
+				strcpy(prd[j].nom,c[i].nom);
+				//quantite 
+				c[i].quantite=prd[i].quantite;
+				prd[i].quantite=prd[j].quantite;
+				prd[j].quantite=c[i].quantite;
+				//prix 
+				c[i].prix=prd[i].prix;
+				prd[i].prix=prd[j].prix;
+				prd[j].prix=c[i].prix;
+				
+				
+			}
+		}
 	}
-	return output;
+	printData();
+
 }
 int main() {
     //float prx=14.98;
     //printf("%.2f",calculeTtc(prx));
-    char f[10][20]={"ayoub","taza","mohamed","fes","mjid","jalil","aicha","huawei","dell","youness"};
-    char e[10][20];
-    e=compare(f);
-    
+    //char f[10][20]={"ayoub","taza","mohamed","fes","mjid","jalil","aicha","huawei","dell","youness"};
+    //char e[10][20];
+    //e=compare(f);
+    sortByPrice();
     return 0;
 }

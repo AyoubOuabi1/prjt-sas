@@ -60,7 +60,7 @@ void getAllProduct(){
 	}
 	//printf("line : %s", data[2]);
 	fclose(file);
-	printf("%d \n ",lineCount);
+	//printf("%d \n ",lineCount);
 	//struct  Produit prd[lineCount],*p;
 	for(i=0;i<lineCount;i++){
 		char* item =strtok(data[i],"/");
@@ -79,12 +79,23 @@ void getAllProduct(){
 	//p=prd;
 	//return prd;
 }
-int main() {
-    int i;
-    struct  Produit pr[lineCount];
-    getAllProduct();
+//print 
+void printData(){
+	getAllProduct();
+	int i;
     for (i=0;i<lineCount;i++){
 		printf("le code : %s / le nom : %s / la quantite est : %d / le prix : %.2f \n ",prd[i].code,prd[i].nom,prd[i].quantite,prd[i].prix);
 	}
+}
+//calcule de prix avec ttc--> prix * 15%
+float calculeTtc(float prix){
+	float ttc;
+	ttc=prix *0.15;
+	return ttc;
+	
+}
+int main() {
+    float prx=14.98;
+    printf("%.2f",calculeTtc(prx));
     return 0;
 }

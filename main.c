@@ -9,6 +9,7 @@ struct Produit{
     char  nom[20];
     int   quantite;
     float prix;
+    float prixTtc;
 };
 //static variable 
 static int lineCount=0;
@@ -43,49 +44,61 @@ void insertIntoFile(int n){
     }
     fclose(fptr);
 }
+
+void reWriteFile(int n){
+    FILE *fptr;
+    int i;
+    fptr = fopen("ProduitData.txt","w");
+    for(i = 0; i < lineCount; ++i)
+    {
+    	//code
+        fputs(prd[i].code, fptr);
+        fprintf(fptr, "/");
+        
+        //nom
+        fputs(prd[i].nom, fptr);
+        fprintf(fptr, "/");
+        
+        //quantite
+		fprintf(fptr, "%d /",prd[i].quantite);
+		
+        //prix
+        fprintf(fptr, "%.2f\n",prd[i].prix);
+    }
+    fclose(fptr);
+}
 void getAllProduct(){
 	char data[200][200];
    
     int i;
     FILE *file;
     file= fopen("ProduitData.txt","r");
-    //fgets(data,200,file);
+    
     while(!feof(file)){
     	if(fgets(data[lineCount],200,file)!=NULL){
     		lineCount++;
 		}
-    	//printf("line : %s", data);
+    	
     	
     	 
 	}
-	//printf("line : %s", data[2]);
+
 	fclose(file);
-	//printf("%d \n ",lineCount);
-	//struct  Produit prd[lineCount],*p;
 	for(i=0;i<lineCount;i++){
 		char* item =strtok(data[i],"/");
+		//code 
 		strcpy(prd[i].code,item);
-		//printf("%s\n ",item);
+		//nom
 		item=strtok(NULL,"/");
 		strcpy(prd[i].nom,item);
-		//printf("%s\n ",item);
+		//quantite
 		item=strtok(NULL,"/");
 		prd[i].quantite=atof(item);
-		//printf("%s\n ",item);
+		//prix
 		item=strtok(NULL,"/");
 		prd[i].prix= atof(item);
-		//printf("%s\n ",item);
 	}
-	//p=prd;
-	//return prd;
-}
-//print 
-void printData(){
-	//getAllProduct();
-	int i;
-    for (i=0;i<lineCount;i++){
-		printf("le code : %s / le nom : %s / la quantite est : %d / le prix : %.2f \n ",prd[i].code,prd[i].nom,prd[i].quantite,prd[i].prix);
-	}
+	
 }
 //calcule de prix avec ttc--> prix * 15%
 float calculeTtc(float prix){
@@ -94,7 +107,17 @@ float calculeTtc(float prix){
 	return ttc;
 	
 }
-//comapre two char 
+//print 
+void printData(){
+	
+	int i;
+	float pTtc;
+    for (i=0;i<lineCount;i++){
+		printf("le nom : %s  le prix : %.2f  / le prix ttc est : %.2f \n ", prd[i].nom, prd[i].prix,calculeTtc(prd[i].prix));
+	}
+}
+
+//Sort Functions 
 char sortByAlpha(){
 	getAllProduct();
 	int i,j,d;
@@ -127,7 +150,20 @@ char sortByAlpha(){
 	printData();
 
 }
-
+//sell new product 
+void sellNewProduct(){
+	
+}
+//search functions section
+int searchByCode(char code[20]){
+	int i,index;
+	for(i=0;i<lineCount;i++){
+		if(prd[i].code==code){
+			return i;
+		}
+	}
+	return 0;
+}
 char sortByPrice(){
 	getAllProduct();
 	int i,j,d;
@@ -161,11 +197,6 @@ char sortByPrice(){
 
 }
 int main() {
-    //float prx=14.98;
-    //printf("%.2f",calculeTtc(prx));
-    //char f[10][20]={"ayoub","taza","mohamed","fes","mjid","jalil","aicha","huawei","dell","youness"};
-    //char e[10][20];
-    //e=compare(f);
     sortByPrice();
     return 0;
 }

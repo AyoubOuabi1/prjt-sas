@@ -94,8 +94,33 @@ float calculeTtc(float prix){
 	return ttc;
 	
 }
+//comapre two char 
+char compare(char a[200][20]){
+	int i,j,d;
+	char c[lineCount][20],output[lineCount][20];
+	for(i=0;i<lineCount;i++){
+		for(j=i+1;j<lineCount;j++){
+			if(a[i][0]>=a[j][0]){
+				strcpy(c[i],a[i]);
+				strcpy(a[i],a[j]);
+				strcpy(a[j],c[i]);
+			
+				
+			}
+		}
+	}
+
+	for (d=0;d<lineCount;d++){
+		strcpy(output[d],a[d]);
+	}
+	return output;
+}
 int main() {
-    float prx=14.98;
-    printf("%.2f",calculeTtc(prx));
+    //float prx=14.98;
+    //printf("%.2f",calculeTtc(prx));
+    char f[10][20]={"ayoub","taza","mohamed","fes","mjid","jalil","aicha","huawei","dell","youness"};
+    char e[10][20];
+    e=compare(f);
+    
     return 0;
 }

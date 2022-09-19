@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-//static variable 
-static int lineCount=0;
+
 
 //structs sections
 struct Produit{
@@ -11,7 +10,9 @@ struct Produit{
     int   quantite;
     float prix;
 };
-
+//static variable 
+static int lineCount=0;
+struct Produit prd[200];
 //funftions section
 void insertIntoFile(int n){
     FILE *fptr;
@@ -42,7 +43,7 @@ void insertIntoFile(int n){
     }
     fclose(fptr);
 }
-struct Produit getAllProduct(){
+void getAllProduct(){
 	char data[200][200];
    
     int i;
@@ -60,7 +61,7 @@ struct Produit getAllProduct(){
 	//printf("line : %s", data[2]);
 	fclose(file);
 	printf("%d \n ",lineCount);
-	struct  Produit prd[lineCount],*p;
+	//struct  Produit prd[lineCount],*p;
 	for(i=0;i<lineCount;i++){
 		char* item =strtok(data[i],"/");
 		strcpy(prd[i].code,item);
@@ -76,14 +77,14 @@ struct Produit getAllProduct(){
 		//printf("%s\n ",item);
 	}
 	//p=prd;
-	return prd;
+	//return prd;
 }
 int main() {
     int i;
     struct  Produit pr[lineCount];
-    pr=getAllProduct();
+    getAllProduct();
     for (i=0;i<lineCount;i++){
-		printf("le code : %s / le nom : %s / la quantite est : %d / le prix : %.2f \n ",pr[i].code,pr[i].nom,pr[i].quantite,pr[i].prix);
+		printf("le code : %s / le nom : %s / la quantite est : %d / le prix : %.2f \n ",prd[i].code,prd[i].nom,prd[i].quantite,prd[i].prix);
 	}
     return 0;
 }

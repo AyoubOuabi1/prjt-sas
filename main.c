@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <time.h>
 
 //structs sections
 struct Produit{
@@ -10,6 +10,7 @@ struct Produit{
     int   quantite;
     float prix;
     float prixTtc;
+    char  dateDeVente[3][4];
 };
 //static variable 
 static int lineCount=0;
@@ -113,11 +114,39 @@ void printData(){
 	int i;
 	float pTtc;
     for (i=0;i<lineCount;i++){
-		printf("le nom : %s  le prix : %.2f  / le prix ttc est : %.2f \n ", prd[i].nom, prd[i].prix,calculeTtc(prd[i].prix)+prd[i].prix);
+		printf("le nom : %s la quantite est : %d / le prix : %.2f  / le prix ttc est : %.2f \n ", prd[i].nom,prd[i].quantite, prd[i].prix,calculeTtc(prd[i].prix)+prd[i].prix);
 	}
 }
 //sell new product 
 void sellNewProduct(){
+	char code[20];
+	time_t currentTime;
+	//time(&currentTime);
+	time_t tim;
+	time(&tim);
+	struct tm *dt=localtime(&tim);
+	int i,qnt;
+	printf("entrez le code de produit");
+	scanf("%s",&code);
+	if(getCodeIndex(code)>=0){
+		 i=getCodeIndex(code);
+		 printf("entrez la quantite");
+		 scanf("%d",&qnt);
+		 if(prd[i].quantite>=qnt){
+		 	prd[i].quantite=prd[i].quantite-qnt;
+		 	//strcpy(prd[i].dateDeVente[0],dt->tm_mday);
+			//strcpy(prd[i].dateDeVente[1],dt->tm_mon+1+'0');
+		 	//strcpy(prd[i].dateDeVente[2],dt->tm_year+1900+'0');
+		 	printData();
+		 }else 
+			printf("la quantite demande superieure la quantite en stock");
+		
+         //prd[i].dateDeVente[1]= dt->tm_mon;
+         //prd[i].dateDeVente[2]= dt->tm_year;
+         
+		
+	}else 
+		printf("entrez un autre code");
 	
 }
 //search functions section
@@ -135,14 +164,18 @@ int getCodeIndex(char code[20]){
 void searchProductByCode(char code[20]){
 	if(getCodeIndex(code)>=0){
 		int i=getCodeIndex(code);
-		printf("le nom : %s  le prix : %.2f  / le prix ttc est : %.2f \n ", prd[i].nom, prd[i].prix,calculeTtc(prd[i].prix)+prd[i].prix);
+		printf("le nom : %s / le prix : %.2f  / le prix ttc est : %.2f \n ", prd[i].nom, prd[i].prix,calculeTtc(prd[i].prix)+prd[i].prix);
 	}else 
 		printf("saisir un autre code");
 	
 }
 void searchByQuantite(int qnt){
 	int i;
-	struct Produit prd[];
+	for (i=0;i<lineCount;i++){
+		if(prd[i].quantite==qnt){
+			printf("le nom : %s  le prix : %.2f  / le prix ttc est : %.2f \n", prd[i].nom, prd[i].prix,calculeTtc(prd[i].prix)+prd[i].prix);
+		}
+	}
 }
 //Sort Functions 
 char sortByAlpha(){
@@ -211,7 +244,8 @@ char sortByPrice(){
 
 }
 int main() {
+
 	getAllProduct();
-    searchProductByCode("d");
+    sellNewProduct();
     return 0;
 }

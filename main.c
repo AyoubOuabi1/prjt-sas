@@ -113,10 +113,37 @@ void printData(){
 	int i;
 	float pTtc;
     for (i=0;i<lineCount;i++){
-		printf("le nom : %s  le prix : %.2f  / le prix ttc est : %.2f \n ", prd[i].nom, prd[i].prix,calculeTtc(prd[i].prix));
+		printf("le nom : %s  le prix : %.2f  / le prix ttc est : %.2f \n ", prd[i].nom, prd[i].prix,calculeTtc(prd[i].prix)+prd[i].prix);
 	}
 }
-
+//sell new product 
+void sellNewProduct(){
+	
+}
+//search functions section
+int getCodeIndex(char code[20]){
+	int i,index;
+	for(i=0;i<lineCount;i++){
+		if(strcmp(prd[i].code,code)==0){
+			return i;
+		}else {
+		
+		}
+	}
+		return -1;
+}
+void searchProductByCode(char code[20]){
+	if(getCodeIndex(code)>=0){
+		int i=getCodeIndex(code);
+		printf("le nom : %s  le prix : %.2f  / le prix ttc est : %.2f \n ", prd[i].nom, prd[i].prix,calculeTtc(prd[i].prix)+prd[i].prix);
+	}else 
+		printf("saisir un autre code");
+	
+}
+void searchByQuantite(int qnt){
+	int i;
+	struct Produit prd[];
+}
 //Sort Functions 
 char sortByAlpha(){
 	getAllProduct();
@@ -150,20 +177,7 @@ char sortByAlpha(){
 	printData();
 
 }
-//sell new product 
-void sellNewProduct(){
-	
-}
-//search functions section
-int searchByCode(char code[20]){
-	int i,index;
-	for(i=0;i<lineCount;i++){
-		if(prd[i].code==code){
-			return i;
-		}
-	}
-	return 0;
-}
+
 char sortByPrice(){
 	getAllProduct();
 	int i,j,d;
@@ -197,6 +211,7 @@ char sortByPrice(){
 
 }
 int main() {
-    sortByPrice();
+	getAllProduct();
+    searchProductByCode("d");
     return 0;
 }

@@ -1,5 +1,5 @@
 w/hiiis/3 /93.90
-l/testnom15/2/78.92
+l/testnom15/2 /78.92
 d/testnom10/2 /78.92
 v/testnom5/74 /78.92
 k/testnom14/64 /68.92
@@ -13,5 +13,4 @@ y/testnom7/44 /48.92
 q/testnom2/44 /48.92
 b/testnom11/34 /38.92
 s/testnom6/1 /38.92
-x/testnom1/4 /38.92
-z/testt/29 /23.93
+z/testt/59 /23.93

@@ -304,6 +304,66 @@ char checkQuantity(){
     }
 	backToMenu();
 }
+//remove product from the stock 
+void deletePrd(){
+	char code[20];
+	printf("enter the code of the product");
+    scanf("%s",&code);
+    
+    int i,qnt;
+    if(getCodeIndex(code)>=0){
+        i=getCodeIndex(code);
+        while(i<lineCount){
+        	 //code
+            strcpy(prd[i].code,prd[i+1].code);
+              
+            //nom
+            strcpy(prd[i].nom,prd[i+1].nom);
+            //quantite
+            prd[i].quantite=prd[i+1].quantite;
+            //prix
+            prd[i].prix=prd[i+1].prix;
+            prd[i].dateDeVente[0]=prd[i+1].dateDeVente[0];
+            prd[i].dateDeVente[1]=prd[i+1].dateDeVente[1];
+            prd[i].dateDeVente[2]=prd[i+1].dateDeVente[2];
+        	i++;
+        	
+		}
+		lineCount--;
+        reWriteFile(); 
+        backToMenu();
+        
+
+
+    }else
+        printf("product code not found");
+}
+//update stock 
+void updateStock(){
+	char code[20];
+	printf("enter the code of the product");
+    scanf("%s",&code);
+    
+    int i,qnt;
+    if(getCodeIndex(code)>=0){
+        i=getCodeIndex(code);
+        printf("enter new  quantity of the product");
+        scanf("%d",&qnt);
+        prd[i].quantite=prd[i].quantite+qnt;
+        reWriteFile();
+        printf("\t\t\t  -----------------------------------------------------------------\n");
+    	printf("\t\t\t  |  PROD NAME | PROD QUANTITY |  PROD PRICE  | PROD PRICETTC | \n");
+    	printf("\t\t\t  -----------------------------------------------------------------\n");
+        printf("\t\t\t   %s               %d          %.2f      %.2f\n", prd[i].nom,prd[i].quantite,prd[i].prix,calculeTtc(prd[i].prix)+prd[i].prix);
+        
+        backToMenu();
+        
+
+
+    }else
+        printf("product code not found");
+
+}
 //menu function 
 void menu(){
     int choice,number,addChoise,listChoise,searchChoise,prdQnt;
@@ -378,7 +438,13 @@ void menu(){
 			break;
 		case 5:
 		 	checkQuantity();
-            break; 	
+            break;
+		case 6:
+		 	updateStock();
+            break; 	 
+		case 7:
+		 	deletePrd();
+            break; 		
     }
 
 }

@@ -15,8 +15,10 @@ struct Produit{
 //static variable
 static int lineCount=0;
 struct Produit prd[200];
+
 //funftions section
 void insertIntoFile(int n){
+	system("cls");
     FILE *fptr;
     int i;
     struct Produit p[n];
@@ -24,26 +26,28 @@ void insertIntoFile(int n){
     for(i = 0; i < n; ++i)
     {
         fflush(stdin);
+         printf("\nproduct  number %d \n",i+1);
         //code
-        printf("saisir le code : ");
+        printf("\nenter the code of the product :  ");
         scanf("%s",&p[i].code);
         fputs(p[i].code, fptr);
         fprintf(fptr, "/");
         //nom
-        printf("saisir le nom: ");
+        printf("\nenter the name of the product : ");
         scanf("%s",&p[i].nom);
         fputs(p[i].nom, fptr);
         fprintf(fptr, "/");
         //quantite
-        printf("saisir la quantite: ");
+        printf("\nenter the quantity of the product :");
         scanf("%d",&p[i].quantite);
         fprintf(fptr, "%d /",p[i].quantite);
         //prix
-        printf("saisir le prix: ");
+        printf("\nenter the price of the product : ");
         scanf("%f",&p[i].prix);
-        fprintf(fptr, "%.2f\n",p[i].prix);
+        fprintf(fptr, "%.2f \n",p[i].prix);
     }
     fclose(fptr);
+    backToMenu();
 }
 
 void reWriteFile(){
@@ -133,40 +137,59 @@ float calculeTtc(float prix){
 }
 //print
 void printData(){
-
+	
     int i;
     for (i=0;i<lineCount;i++){
-        printf("le nom : %s la quantite est : %d / le prix : %.2f  / le prix ttc est : %.2f \n ", prd[i].nom,prd[i].quantite, prd[i].prix,calculeTtc(prd[i].prix)+prd[i].prix);
+    	printf("\t\t\t  -----------------------------------------------------\n");
+    	printf("\t\t\t  |  PROD NAME |  PROD PRICE  | PROD PRICETTC | \n");
+    	printf("\t\t\t  -----------------------------------------------------\n");
+        printf("\t\t\t   %s          %.2f      %.2f\n", prd[i].nom,prd[i].prix,calculeTtc(prd[i].prix)+prd[i].prix);
     }
 }
 
 //search functions section
 int getCodeIndex(char code[20]){
     int i;
+    //getAllProduct();
     for(i=0;i<lineCount;i++){
         if(strcmp(prd[i].code,code)==0){
             return i;
-        }else {
-
         }
     }
-    return -1;
+    //return -1;
 }
 void searchProductByCode(char code[20]){
-    if(getCodeIndex(code)>=0){
-        int i=getCodeIndex(code);
-        printf("le nom : %s / le prix : %.2f  / le prix ttc est : %.2f \n ", prd[i].nom, prd[i].prix,calculeTtc(prd[i].prix)+prd[i].prix);
-    }else
-        printf("saisir un autre code");
-
+	int i;
+	for(i=0;i<lineCount;i++){
+        if(strcmp(prd[i].code,code)==0){
+           printf("\t\t\t  -----------------------------------------------------\n");
+    		printf("\t\t\t  |  PROD NAME |  PROD PRICE  | PROD PRICETTC | \n");
+    		printf("\t\t\t  -----------------------------------------------------\n");
+        	printf("\t\t\t   %s          %.2f      %.2f\n", prd[i].nom,prd[i].prix,calculeTtc(prd[i].prix)+prd[i].prix);
+        }
+    }
+//    if(i>=0){
+//        printf("\t\t\t  -----------------------------------------------------\n");
+//    	printf("\t\t\t  |  PROD NAME |  PROD PRICE  | PROD PRICETTC | \n");
+//    	printf("\t\t\t  -----------------------------------------------------\n");
+//        printf("\t\t\t   %s          %.2f      %.2f\n", prd[i].nom,prd[i].prix,calculeTtc(prd[i].prix)+prd[i].prix);
+//        
+//    }else
+//        printf("saisir un autre code\n\n");
+	backToMenu();
 }
 void searchByQuantite(int qnt){
+	//getAllProduct();
     int i;
     for (i=0;i<lineCount;i++){
         if(prd[i].quantite==qnt){
-            printf("le nom : %s  le prix : %.2f  / le prix ttc est : %.2f \n", prd[i].nom, prd[i].prix,calculeTtc(prd[i].prix)+prd[i].prix);
+            printf("\t\t\t  -----------------------------------------------------\n");
+    		printf("\t\t\t  |  PROD NAME |  PROD PRICE  | PROD PRICETTC | \n");
+    		printf("\t\t\t  -----------------------------------------------------\n");
+        	printf("\t\t\t   %s          %.2f      %.2f\n", prd[i].nom,prd[i].prix,calculeTtc(prd[i].prix)+prd[i].prix);
         }
     }
+    backToMenu();
 }
 //sell new product
 void sellNewProduct(){
@@ -177,34 +200,33 @@ void sellNewProduct(){
     time(&tim);
     struct tm *dt=localtime(&tim);
     int i,qnt;
-    printf("entrez le code de produit");
+    printf("enter the code of the product");
     scanf("%s",&code);
     if(getCodeIndex(code)>=0){
         i=getCodeIndex(code);
-        printf("entrez la quantite");
+        printf("enter the quantity of the product");
         scanf("%d",&qnt);
         if(prd[i].quantite>=qnt){
             prd[i].quantite=prd[i].quantite-qnt;
             prd[i].dateDeVente[0]= dt->tm_mday;
             prd[i].dateDeVente[1]= dt->tm_mon + 1;
             prd[i].dateDeVente[2]=dt->tm_year + 1900;
-             printf("le nom : %s la quantite est : %d / le prix : %.2f  / le prix ttc est : %.2f est la date de vente %d/%d/%d \n ", prd[i].nom,prd[i].quantite, prd[i].prix,calculeTtc(prd[i].prix)+prd[i].prix
-                    ,prd[i].dateDeVente[0],prd[i].dateDeVente[1],prd[i].dateDeVente[2]);
             insertSalesIntoFile(i,qnt);
             reWriteFile();
             getAllProduct();
+            backToMenu();
         }else
-            printf("la quantite demand superieure la quantite en stock");
+            printf("la quantite demande superieure la quantite en stock");
 
 
 
     }else
-        printf("entrez un autre code");
+        printf("invalid");
 
 }
 //Sort Functions
 char sortByAlpha(){
-    getAllProduct();
+    //getAllProduct();
     int i,j,d;
     struct Produit c[lineCount];
     for(i=0;i<lineCount;i++){
@@ -233,11 +255,11 @@ char sortByAlpha(){
         }
     }
     printData();
-
+	backToMenu();
 }
 
 char sortByPrice(){
-    getAllProduct();
+    //getAllProduct();
     int i,j,d;
     struct Produit c[lineCount];
     for(i=0;i<lineCount;i++){
@@ -266,22 +288,110 @@ char sortByPrice(){
         }
     }
     printData();
-
+	backToMenu();
 }
-char sortByQuantity(){
-    getAllProduct();
+char checkQuantity(){
+    //getAllProduct();
     int i;
     for(i=0;i<lineCount;i++){
             if(prd[i].quantite<3){
-                printf("le nom : %s la quantite est : %d / le prix : %.2f  / le prix ttc est : %.2f \n ", prd[i].nom,prd[i].quantite, prd[i].prix,calculeTtc(prd[i].prix)+prd[i].prix);
+                printf("\t\t\t  -----------------------------------------------------\n");
+    			printf("\t\t\t  |  PROD NAME | PROD QUANTITY |  PROD PRICE  | PROD PRICETTC | \n");
+    			printf("\t\t\t  -----------------------------------------------------\n");
+        		printf("\t\t\t   %s               %d          %.2f      %.2f\n", prd[i].nom,prd[i].quantite,prd[i].prix,calculeTtc(prd[i].prix)+prd[i].prix);
 
             }
     }
-    printData();
+	backToMenu();
+}
+//menu function 
+void menu(){
+    int choice,number,addChoise,listChoise,searchChoise,prdQnt;
+    char prdCode[20];
+    system("cls");
+    printf("		//////////////////////////////////////////////////////////\n");
+    printf("		//             Pharmacy System Managment                // \n");
+    printf("		//////////////////////////////////////////////////////////\n \n \n \n");
+    printf("               		  choose one of the following options\n");
+    printf("                          -----------------------------------\n \n");
+    printf("        choose 1 for add product or many products\n");
+    printf("        choose 2 for List All the Products\n");
+    printf("        choose 3 for save sales \n");
+    printf("        choose 4 search for the product\n");
+    printf("        choose 5 for state of the stock\n");
+    printf("        choose 6 for update the product in the stock\n");
+    printf("        choose 7 for delete the product from the stock\n");
+    printf("        choose 8 see the statistique of the sales\n\n");
+    printf("enter your choice here :  ");
+    scanf("%d",&choice);
+    switch (choice) {
+        case 1:
+            system("cls");
+            printf("            choose what you want \n");
+            printf("            -------------------- \n\n\n");
+            printf("choose 1 for add one product\n\n");
+            printf("choose 2 for add many products\n\n");
+            printf("enter your choice here :  ");
+            scanf("%d",&addChoise);
+            if(addChoise==1){
+                insertIntoFile(1);
+            }else {
+                printf("enter how many product you want to add : ");
+                scanf("%d",&number);
+                insertIntoFile(number);
+            }
+            break;
+         case 2:
+		 	system("cls");
+            printf("            choose what you want \n");
+            printf("            -------------------- \n\n\n");
+            printf("choose 1 for sort by Alphabetical order\n\n");
+            printf("choose 2 for sort by price \n\n");
+            printf("enter your choice here :  ");
+            scanf("%d",&listChoise);
+            if(listChoise==1){
+                sortByAlpha();
+            }else {
+               sortByPrice();
+            }
+            break;
+        case 3:
+		 	sellNewProduct();
+            break;  
+		case 4:
+		 	system("cls");
+            printf("            choose what you want \n");
+            printf("            -------------------- \n\n\n");
+            printf("choose 1 for search by the code\n\n");
+            printf("choose 2 for search by quantity \n\n");
+            printf("enter your choice here :  ");
+            scanf("%d",&prdCode);
+            if(searchChoise==1){
+            	printf("enter the code of the product here :  ");
+            	scanf("%d",&prdCode);
+                searchProductByCode(prdCode);
+            }else {
+            	printf("enter the quantity of the product here :  ");
+            	scanf("%d",&prdQnt);
+                searchByQuantite(prdQnt);
+            } 	  
+			break;
+		case 5:
+		 	checkQuantity();
+            break; 	
+    }
 
 }
+void backToMenu(){
+	int back;
+	printf("to back to the menu enter 1 here :  ");
+    scanf("%d",&back);
+    if(back==1){
+    	menu();
+	}
+}
 int main() {
-
-    sortByQuantity();
+	getAllProduct();
+    menu();
     return 0;
 }

@@ -9,13 +9,22 @@ struct Produit{
     char  nom[20];
     int   quantite;
     float prix;
-    float prixTtc;
+    int  dateDeVente[3];
+};
+struct ProductSales{
+	char  code[20];
+    char  nom[20];
+    int   quantite;
+    float prix;
+    float prixttc;
+    float prixtotal;
     int  dateDeVente[3];
 };
 //static variable
 static int lineCount=0;
+static int salesCount=0;
 struct Produit prd[200];
-
+struct ProductSales pSales[200];
 //funftions section
 void insertIntoFile(int n){
 	system("cls");
@@ -29,12 +38,12 @@ void insertIntoFile(int n){
          printf("\nproduct  number %d \n",i+1);
         //code
         printf("\nenter the code of the product :  ");
-        scanf("%s",&p[i].code);
+        scanf("%[^\n]%*c",&p[i].code);
         fputs(p[i].code, fptr);
         fprintf(fptr, "/");
         //nom
         printf("\nenter the name of the product : ");
-        scanf("%s",&p[i].nom);
+        scanf("%[^\n]%*c",&p[i].nom);
         fputs(p[i].nom, fptr);
         fprintf(fptr, "/");
         //quantite
@@ -79,19 +88,20 @@ void insertSalesIntoFile(int i,int qntVente){
 
 
     //code
-    fputs(prd[i].code, fptr);
+    fputs(pSales[i].code, fptr);
     fprintf(fptr, "/");
 
     //nom
-    fputs(prd[i].nom, fptr);
+    fputs(pSales[i].nom, fptr);
     fprintf(fptr, "/");
 
     //quantite
     fprintf(fptr, "%d /",qntVente);
 
-    //prix
-    fprintf(fptr, "%.2f/",prd[i].prix);
-    fprintf(fptr, "%d-%d-%d\n",prd[i].dateDeVente[0],prd[i].dateDeVente[1],prd[i].dateDeVente[2]);
+    //prix ttc 
+    fprintf(fptr, "%.2f/",pSales[i].prixttc);
+    // date
+    fprintf(fptr, "%d-%d-%d\n",pSales[i].dateDeVente[0],pSales[i].dateDeVente[1],pSales[i].dateDeVente[2]);
 
     fclose(fptr);
 }
@@ -150,32 +160,23 @@ void printData(){
 //search functions section
 int getCodeIndex(char code[20]){
     int i;
-    //getAllProduct();
     for(i=0;i<lineCount;i++){
         if(strcmp(prd[i].code,code)==0){
             return i;
         }
     }
-    //return -1;
+    
 }
 void searchProductByCode(char code[20]){
-	int i;
-	for(i=0;i<lineCount;i++){
-        if(strcmp(prd[i].code,code)==0){
-           printf("\t\t\t  -----------------------------------------------------\n");
-    		printf("\t\t\t  |  PROD NAME |  PROD PRICE  | PROD PRICETTC | \n");
-    		printf("\t\t\t  -----------------------------------------------------\n");
-        	printf("\t\t\t   %s          %.2f      %.2f\n", prd[i].nom,prd[i].prix,calculeTtc(prd[i].prix)+prd[i].prix);
-        }
-    }
-//    if(i>=0){
-//        printf("\t\t\t  -----------------------------------------------------\n");
-//    	printf("\t\t\t  |  PROD NAME |  PROD PRICE  | PROD PRICETTC | \n");
-//    	printf("\t\t\t  -----------------------------------------------------\n");
-//        printf("\t\t\t   %s          %.2f      %.2f\n", prd[i].nom,prd[i].prix,calculeTtc(prd[i].prix)+prd[i].prix);
-//        
-//    }else
-//        printf("saisir un autre code\n\n");
+	int i=getCodeIndex(code);
+	if(i>=0){
+		printf("\t\t\t  -----------------------------------------------------\n");
+    	printf("\t\t\t  |  PROD NAME |  PROD PRICE  | PROD PRICETTC | \n");
+    	printf("\t\t\t  -----------------------------------------------------\n");
+        printf("\t\t\t   %s          %.2f      %.2f\n", prd[i].nom,prd[i].prix,calculeTtc(prd[i].prix)+prd[i].prix);
+	}else {
+		printf("\n\ncode not found\n\n");
+	}
 	backToMenu();
 }
 void searchByQuantite(int qnt){
@@ -194,34 +195,39 @@ void searchByQuantite(int qnt){
 //sell new product
 void sellNewProduct(){
     char code[20];
-    time_t currentTime;
-    //time(&currentTime);
+   
     time_t tim;
     time(&tim);
     struct tm *dt=localtime(&tim);
     int i,qnt;
-    printf("enter the code of the product");
-    scanf("%s",&code);
+    printf("enter the code of the product :  ");
+    scanf("%%[^\n]%*c",&code);
     if(getCodeIndex(code)>=0){
         i=getCodeIndex(code);
-        printf("enter the quantity of the product");
+        printf("enter the quantity of the product :  ");
         scanf("%d",&qnt);
         if(prd[i].quantite>=qnt){
             prd[i].quantite=prd[i].quantite-qnt;
-            prd[i].dateDeVente[0]= dt->tm_mday;
-            prd[i].dateDeVente[1]= dt->tm_mon + 1;
-            prd[i].dateDeVente[2]=dt->tm_year + 1900;
-            insertSalesIntoFile(i,qnt);
+            strcpy(pSales[salesCount].code,prd[i].code);
+            strcpy(pSales[salesCount].nom,prd[i].nom);
+            pSales[salesCount].quantite=qnt;
+            pSales[salesCount].prixttc=calculeTtc(prd[i].prix)+prd[i].prix;
+            pSales[salesCount].prixtotal=pSales[salesCount].prixttc*qnt;
+            pSales[salesCount].dateDeVente[0]= dt->tm_mday;
+            pSales[salesCount].dateDeVente[1]= dt->tm_mon + 1;
+            pSales[salesCount].dateDeVente[2]=dt->tm_year + 1900;
+            insertSalesIntoFile(salesCount,qnt);
+            salesCount++;
             reWriteFile();
-            getAllProduct();
             backToMenu();
         }else
-            printf("la quantite demande superieure la quantite en stock");
-
+            printf("\n\nout of stock\n\n");
+			backToMenu();
 
 
     }else
-        printf("invalid");
+        printf("\n\ncode not found\n\n");
+        backToMenu();
 
 }
 //Sort Functions
@@ -231,9 +237,9 @@ char sortByAlpha(){
     struct Produit c[lineCount];
     for(i=0;i<lineCount;i++){
         for(j=i+1;j<lineCount;j++){
-            if(prd[i].code[0]>=prd[j].code[0]){
+            if(prd[i].nom[0]>=prd[j].nom[0]){
                 //code
-
+				
                 strcpy(c[i].code,prd[i].code);
                 strcpy(prd[i].code,prd[j].code);
                 strcpy(prd[j].code,c[i].code);
@@ -291,7 +297,6 @@ char sortByPrice(){
 	backToMenu();
 }
 char checkQuantity(){
-    //getAllProduct();
     int i;
     for(i=0;i<lineCount;i++){
             if(prd[i].quantite<3){
@@ -307,8 +312,8 @@ char checkQuantity(){
 //remove product from the stock 
 void deletePrd(){
 	char code[20];
-	printf("enter the code of the product");
-    scanf("%s",&code);
+	printf("enter the code of the product :  ");
+    scanf("%[^\n]%*c",&code);
     
     int i,qnt;
     if(getCodeIndex(code)>=0){
@@ -336,18 +341,18 @@ void deletePrd(){
 
 
     }else
-        printf("product code not found");
+        printf("\n\nproduct code not found\n\n");
 }
 //update stock 
 void updateStock(){
 	char code[20];
-	printf("enter the code of the product");
+	printf("\n\nenter the code of the product :  ");
     scanf("%s",&code);
     
     int i,qnt;
     if(getCodeIndex(code)>=0){
         i=getCodeIndex(code);
-        printf("enter new  quantity of the product");
+        printf("\n\nenter new  quantity of the product :  ");
         scanf("%d",&qnt);
         prd[i].quantite=prd[i].quantite+qnt;
         reWriteFile();
@@ -361,9 +366,100 @@ void updateStock(){
 
 
     }else
-        printf("product code not found");
+        printf("\n\nproduct code not found\n\n");
 
 }
+//statistique section;
+//total price 
+float totlaPrice(){
+	int i;
+	float totalPrice=0,rtn;
+    time_t tim;
+    time(&tim);
+    struct tm *dt=localtime(&tim);
+	for (i=0;i<salesCount;i++){
+		if(pSales[i].dateDeVente[0]== dt->tm_mday && pSales[i].dateDeVente[1]== (dt->tm_mon + 1) &&  pSales[i].dateDeVente[2]==(dt->tm_year + 1900));
+		{
+			totalPrice+= pSales[i].prixtotal;
+		}
+	 
+		
+	}
+	rtn=totalPrice;
+	return rtn ;
+}
+//average price 
+float averagePrice(){
+	float totalprice=totlaPrice();
+	return totalprice/salesCount;
+}
+
+//min price 
+float minPrice(){
+	int i,j;
+	float rtn;
+	time_t tim;
+    time(&tim);
+    struct tm *dt=localtime(&tim);
+	for(i=0;i<salesCount;i++){
+		if(pSales[i].dateDeVente[0]== dt->tm_mday && pSales[i].dateDeVente[1]== (dt->tm_mon + 1) &&  pSales[i].dateDeVente[2]==(dt->tm_year + 1900));
+		{
+			for(j=i+1;j<salesCount;j++){
+				if(pSales[i].prixttc<pSales[j].prixttc){
+					rtn=pSales[i].prixttc;
+				}
+			}
+		}
+	}
+}
+//max price 
+float maxPrice(){
+	int i,j;
+	float rtn;
+	time_t tim;
+    time(&tim);
+    struct tm *dt=localtime(&tim);
+	for(i=0;i<salesCount;i++){
+		if(pSales[i].dateDeVente[0]== dt->tm_mday && pSales[i].dateDeVente[1]== (dt->tm_mon + 1) &&  pSales[i].dateDeVente[2]==(dt->tm_year + 1900));
+		{
+			for(j=i+1;j<salesCount;j++){
+				if(pSales[i].prixttc>pSales[j].prixttc){
+					rtn=pSales[i].prixttc;
+				}
+			}
+		}
+	}
+}
+void productStatistique(){
+	int stqChoise;
+	printf("            choose what you want \n");
+    printf("            -------------------- \n\n\n");
+    printf("choose 1 to see Total amount of  sales of the day \n\n");
+    printf("choose 2 to see average price of products  \n\n");
+    printf("choose 3 to see max price of products  \n\n");
+    printf("choose 4 to see min price of products  \n\n");
+    printf("enter your choice here :  ");
+    scanf("%d",&stqChoise);
+    switch (stqChoise){
+    	case 1:
+    		printf("\nTotal amount of sales of this day is : %.2f\n",totlaPrice());
+    		break;
+    	case 2:
+    		printf("\nAverage price of  this day is : %.2f\n",averagePrice());
+    		break;	
+    	case 3:
+    		printf("\nmax price  of  this day is : %.2f\n", maxPrice());
+    		break;		
+    	case 4:
+    		printf("\nmin price of  this day is : %.2f\n",minPrice());
+    		break;		
+	}
+	backToMenu();
+}
+
+
+
+
 //menu function 
 void menu(){
     int choice,number,addChoise,listChoise,searchChoise,prdQnt;
@@ -416,6 +512,7 @@ void menu(){
             }
             break;
         case 3:
+        	system("cls");
 		 	sellNewProduct();
             break;  
 		case 4:
@@ -425,10 +522,10 @@ void menu(){
             printf("choose 1 for search by the code\n\n");
             printf("choose 2 for search by quantity \n\n");
             printf("enter your choice here :  ");
-            scanf("%d",&prdCode);
+            scanf("%d",&searchChoise);
             if(searchChoise==1){
             	printf("enter the code of the product here :  ");
-            	scanf("%d",&prdCode);
+            	scanf("%%[^\n]%*c",&prdCode);
                 searchProductByCode(prdCode);
             }else {
             	printf("enter the quantity of the product here :  ");
@@ -437,20 +534,27 @@ void menu(){
             } 	  
 			break;
 		case 5:
+			system("cls");
 		 	checkQuantity();
             break;
 		case 6:
+			system("cls");
 		 	updateStock();
             break; 	 
 		case 7:
+			system("cls");
 		 	deletePrd();
-            break; 		
+            break; 	
+		case 8:
+			system("cls");
+		 	productStatistique();
+            break; 			
     }
 
 }
 void backToMenu(){
 	int back;
-	printf("to back to the menu enter 1 here :  ");
+	printf("\n\nto back to the menu enter 1 here :  ");
     scanf("%d",&back);
     if(back==1){
     	menu();

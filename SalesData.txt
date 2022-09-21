@@ -12,3 +12,13 @@ the code of the product : j / the name of the product : EDCF / the quantity : 3 
 the code of the product : b / the name of the product : ABILIFY 15 MG / the quantity : 1  / the price with ttc : 90.76  / date : 21-9-2022
 the code of the product : g / the name of the product : CAMD / the quantity : 3  / the price with ttc : 79.26  / date : 21-9-2022
 the code of the product : r / the name of the product : WRTESQ / the quantity : 1  / the price with ttc : 27.52  / date : 21-9-2022
+the code of the product : c / the name of the product : BACQURE 500 MG / the quantity : 1  / the price with ttc : 90.76  / date : 21-9-2022
+the code of the product : h / the name of the product : DEBV RS / the quantity : 6  / the price with ttc : 79.26  / date : 21-9-2022
+the code of the product : j / the name of the product : EDCF / the quantity : 4  / the price with ttc : 67.76  / date : 21-9-2022
+the code of the product : i / the name of the product : DCZF BNR / the quantity : 3  / the price with ttc : 67.76  / date : 21-9-2022
+the code of the product : l / the name of the product : FINBD / the quantity : 3  / the price with ttc : 56.26  / date : 21-9-2022
+the code of the product : e / the name of the product : BCTALL 500 MG / the quantity : 2  / the price with ttc : 90.76  / date : 21-9-2022
+the code of the product : g / the name of the product : CAMD / the quantity : 3  / the price with ttc : 79.26  / date : 21-9-2022
+the code of the product : c / the name of the product : BACQURE 500 MG / the quantity : 1  / the price with ttc : 90.76  / date : 21-9-2022
+the code of the product : f / the name of the product : CMED-RFS / the quantity : 3  / the price with ttc : 79.26  / date : 21-9-2022
+the code of the product : Z / the name of the product : ZRVCBG / the quantity : 1  / the price with ttc : 649.62  / date : 21-9-2022

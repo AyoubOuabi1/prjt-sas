@@ -20,52 +20,91 @@ struct ProductSales{
     float prixtotal;
     int  dateDeVente[3];
 };
-//static and struct variable
-static int lineCount=0;
-static int salesCount=0;
+//struct and variable section
+int lineCount=0;
+int salesCount=0;
 struct Produit prd[200];
 struct ProductSales pSales[200];
 //funftions section
 //files 
+void getAllProduct(){
+    char data[200][200];
+
+    int i;
+    FILE *file;
+    file= fopen("ProduitData.txt","r");
+
+    while(!feof(file)){
+        if(fgets(data[lineCount],200,file)!=NULL){
+            lineCount++;
+        }
+
+
+
+    }
+
+    fclose(file);
+    for(i=0;i<lineCount;i++){
+        char* item =strtok(data[i],"/");
+        //code
+        strcpy(prd[i].code,item);
+        //nom
+        item=strtok(NULL,"/");
+        strcpy(prd[i].nom,item);
+        //quantite
+        item=strtok(NULL,"/");
+        prd[i].quantite=atof(item);
+        //prix
+        item=strtok(NULL,"/");
+        prd[i].prix= atof(item);
+    }
+
+}
 void insertIntoFile(int n){
 	system("cls");
     FILE *fptr;
     int i;
     struct Produit p[n];
     fptr = fopen("ProduitData.txt","a");
-    for(i = 0; i < n; ++i)
+    for(i = 0; i < n; i++)
     {
         fflush(stdin);
         printf("\nproduct  number %d \n",i+1);
         //code
         printf("\nenter the code of the product :  ");
         scanf("%s",&p[i].code);
-        fputs(p[i].code, fptr);
-        fprintf(fptr, "/");
-        //nom
-        printf("\nenter the name of the product : ");
-        scanf("%[^\n]%*c",&p[i].nom);
-        fputs(p[i].nom, fptr);
-        fprintf(fptr, "/");
-        //quantite
-        printf("\nenter the quantity of the product :");
-        scanf("%d",&p[i].quantite);
-        fprintf(fptr, "%d /",p[i].quantite);
-        //prix
-        printf("\nenter the price of the product : ");
-        scanf("%f",&p[i].prix);
-        fprintf(fptr, "%.2f \n",p[i].prix);
-        printf("\n\nproduct  number added with successful %d \n",i+1);
+        if(getCodeIndex(p[i].code)>=0){
+        	printf("\n\nthe code of this product already exist");
+        	break;
+		}else{
+			fputs(p[i].code, fptr);
+        	fprintf(fptr, "/");
+        	//nom
+        	printf("\nenter the name of the product : ");
+        	scanf("%s",&p[i].nom);
+        	fputs(p[i].nom, fptr);
+        	fprintf(fptr, "/");
+        	//quantite
+        	printf("\nenter the quantity of the product :");
+        	scanf("%d",&p[i].quantite);
+        	fprintf(fptr, "%d /",p[i].quantite);
+        	//prix
+        	printf("\nenter the price of the product : ");
+        	scanf("%f",&p[i].prix);
+        	fprintf(fptr, "%.2f \n",p[i].prix);
+        	printf("\n\nproduct  number %d added with successful  \n",i+1);
+        
+		}
+        
     }
     fclose(fptr);
-    backToMenu();
-}
-
-void reWriteFile(){
+    System.Diagnostics.Process.Start(Application.ExecutablePath);
+}	
+void reWriteFile(){          
     FILE *fptr;
     int i;
     fptr = fopen("ProduitData.txt","w");
-    for(i = 0; i < lineCount; ++i)
+    for(i = 0; i < lineCount; i++)
     {
         //code
         fputs(prd[i].code, fptr);
@@ -109,39 +148,7 @@ void insertSalesIntoFile(int i,int qntVente){
 
     fclose(fptr);
 }
-void getAllProduct(){
-    char data[200][200];
 
-    int i;
-    FILE *file;
-    file= fopen("ProduitData.txt","r");
-
-    while(!feof(file)){
-        if(fgets(data[lineCount],200,file)!=NULL){
-            lineCount++;
-        }
-
-
-
-    }
-
-    fclose(file);
-    for(i=0;i<lineCount;i++){
-        char* item =strtok(data[i],"/");
-        //code
-        strcpy(prd[i].code,item);
-        //nom
-        item=strtok(NULL,"/");
-        strcpy(prd[i].nom,item);
-        //quantite
-        item=strtok(NULL,"/");
-        prd[i].quantite=atof(item);
-        //prix
-        item=strtok(NULL,"/");
-        prd[i].prix= atof(item);
-    }
-
-}
 //calcule de prix avec ttc--> prix * 15%
 float calculeTtc(float prix){
     float ttc;
@@ -442,12 +449,12 @@ float minPrice(){
 			for(j=i+1;j<salesCount;j++){
 				if(pSales[i].prixttc<pSales[j].prixttc){
 					rtn=pSales[i].prixttc;
-					return rtn;
+					
 				}
 			}
 		}
 	}
-	
+	return rtn;
 }
 //max price 
 float maxPrice(){
@@ -462,11 +469,14 @@ float maxPrice(){
 			for(j=i+1;j<salesCount;j++){
 				if(pSales[i].prixttc>pSales[j].prixttc){
 					rtn=pSales[i].prixttc;
-					return rtn;
+					
+				}else {
+					rtn=pSales[j].prixttc;
 				}
 			}
 		}
 	}
+	return rtn;
 	
 }
 void productStatistique(){

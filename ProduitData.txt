@@ -1,16 +1,16 @@
-w/hiiis/3 /93.90
-l/testnom15/2 /78.92
-d/testnom10/2 /78.92
-v/testnom5/69 /78.92
-k/testnom14/64 /68.92
-v/testnom9/64 /68.92
-a/testnom4/64 /68.92
-w/testnom13/54 /58.92
-h/testnom8/54 /58.92
-d/testnom3/54 /58.92
-n/testnom12/24 /48.92
-y/testnom7/44 /48.92
-q/testnom2/44 /48.92
-b/testnom11/34 /38.92
-s/testnom6/0 /38.92
-z/testt/9 /23.93
+a/AB-DIGEST/1 /93.90
+c/BACQURE 500 MG/2 /78.92
+e/BCTALL 500 MG/35 /78.92
+g/CAMD/31 /68.92
+f/CMED-RFS/19 /68.92
+i/DCZF BNR/54 /58.92
+h/DEBV RS/41 /68.92
+j/EDCF/51 /58.92
+k/EXSEZ/54 /58.92
+l/FINBD/24 /48.92
+m/FRTVX/44 /48.92
+n/GHYS/44 /48.92
+o/HBEYSW/34 /38.92
+r/WRTESQ/2 /23.93
+p/ZNZIQZ/82 /38.92
+Z/ZRVCBG/2 /564.89

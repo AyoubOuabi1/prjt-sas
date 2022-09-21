@@ -1,10 +1,14 @@
-z/testt/10 /23.93/27.52/20-9-2022
-z/testt/3 /23.93/27.52/20-9-2022
-z/testt/10 /23.93/27.52/20-9-2022
-s/testnom6/1 /38.92/44.76/20-9-2022
-z/testt/10 /23.93/27.52/20-9-2022
-n/testnom12/20 /48.92/56.26/20-9-2022
-z/testt/15 /23.93/27.52/20-9-2022
-v/testnom5/2 /78.92/90.76/20-9-2022
-z/testt/2 /23.93/27.52/20-9-2022
-v/testnom5/3 /78.92/90.76/20-9-2022
+the code of the product : b/ the name of the product : ABILIFY 15 MG/the quantity : 1  /the price with ttc : 90.76  /date : 21-9-2022
+the code of the product : b/ the name of the product : ABILIFY 15 MG/the quantity : 0  /the price with ttc : 90.76  /date : 21-9-2022
+the code of the product : r/ the name of the product : WRTESQ/the quantity : 6  /the price with ttc : 27.52  /date : 21-9-2022
+the code of the product : a/ the name of the product : AB-DIGEST/the quantity : 1  /the price with ttc : 107.99  /date : 21-9-2022
+the code of the product : a / the name of the product : AB-DIGEST / the quantity : 1  / the price with ttc : 107.99  / date : 21-9-2022
+the code of the product : e / the name of the product : BCTALL 500 MG / the quantity : 34  / the price with ttc : 90.76  / date : 21-9-2022
+the code of the product : f / the name of the product : CMED-RFS / the quantity : 45  / the price with ttc : 79.26  / date : 21-9-2022
+the code of the product : h / the name of the product : DEBV RS / the quantity : 23  / the price with ttc : 79.26  / date : 21-9-2022
+the code of the product : g / the name of the product : CAMD / the quantity : 30  / the price with ttc : 79.26  / date : 21-9-2022
+the code of the product : c / the name of the product : BACQURE 500 MG / the quantity : 1  / the price with ttc : 90.76  / date : 21-9-2022
+the code of the product : j / the name of the product : EDCF / the quantity : 3  / the price with ttc : 67.76  / date : 21-9-2022
+the code of the product : b / the name of the product : ABILIFY 15 MG / the quantity : 1  / the price with ttc : 90.76  / date : 21-9-2022
+the code of the product : g / the name of the product : CAMD / the quantity : 3  / the price with ttc : 79.26  / date : 21-9-2022
+the code of the product : r / the name of the product : WRTESQ / the quantity : 1  / the price with ttc : 27.52  / date : 21-9-2022
